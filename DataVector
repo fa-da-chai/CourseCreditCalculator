@@ -1,0 +1,272 @@
+# include <stdio.h>
+# include <stdlib.h>
+# include <string>
+# include <vector>
+# include <iostream>
+# include <fstream>
+
+# define GRADUATIONSUM 128
+# define DEPARTMENTNEED 80
+# define CHOISECREDIT 14
+# define COMMENSENCE 14
+# define COMMENSENCEPLUS 14
+# define BASEMENT 6
+
+using namespace std ;
+typedef char c_str[256] ;
+
+struct Type {
+	int num ;
+	Type *next ;
+} ; // Type()
+
+typedef Type *TypePtr ;
+
+struct Data {
+	TypePtr typeHead ;
+	string name ;
+	int credit ;
+	// string semester ;
+} ; // Data()
+
+class DataVector {
+    std :: vector<Data> datas ;
+
+    public :
+        void Read() {
+            Data temp ;
+            int pre, pos, fNo ;
+            fstream inputFile ;
+            string fileName = "Passed Courses" ;
+            c_str inputLine ;
+            inputFile.open( fileName.c_str(), fstream :: in ) ;
+            if ( inputFile.is_open() ) {
+                while ( inputFile.getline( inputLine, 256, '\n' ) ) {
+                    temp = Data() ;
+                    std :: string buf, cut ;
+                    buf.assign( inputLine ) ;
+                    fNo = 1 ;
+                    pre = 0 ;
+                    pos = buf.find_first_of( ' ', pre ) ;
+                    while ( pos > 0 && fNo < 4 ) {
+                        cut = buf.substr( pre, pos-pre ) ;
+                        if ( fNo == 1 ) {
+                            if ( cut == "系必修" ) {
+                                temp.typeHead = new Type ;
+                                temp.typeHead -> num = 0 ;
+                                temp.typeHead -> next = NULL ;
+                            } // if
+
+                            else if ( cut == "通識基礎" ) {
+                                temp.typeHead = new Type ;
+                                TypePtr walk = temp.typeHead ;
+                                walk -> num = 1 ;
+                                pre = pos + 1 ;
+                                pos = buf.find_first_of( ' ', pre ) ;
+                                cut = buf.substr( pre, pos ) ;
+                                if ( cut == "宗哲" ) {
+                                    walk -> next = new Type ;
+                                    walk = walk -> next ;
+                                    walk -> num = 0 ;
+                                    walk -> next = NULL ;
+                                } // if
+
+                                else if ( cut == "人哲" ) {
+                                    walk -> next = new Type ;
+                                    walk = walk -> next ;
+                                    walk -> num = 1 ;
+                                    walk -> next = NULL ;
+                                } // else if
+
+                                else if ( cut == "公民" ) {
+                                    walk -> next = new Type ;
+                                    walk = walk -> next ;
+                                    walk -> num = 2 ;
+                                    walk -> next = NULL ;
+                                } // else if
+
+                                else if ( cut == "歷史" ) {
+                                    walk -> next = new Type ;
+                                    walk = walk -> next ;
+                                    walk -> num = 3 ;
+                                    walk -> next = NULL ;
+                                } // else if
+
+                                else if ( cut == "文學" ) {
+                                    walk -> next = new Type ;
+                                    walk = walk -> next ;
+                                    walk -> num = 4 ;
+                                    walk -> next = NULL ;
+                                } // else if
+
+                                else { // 其他
+                                    walk -> next = new Type ;
+                                    walk = walk -> next ;
+                                    walk -> num = 5 ;
+                                    walk -> next = NULL ;
+                                } // else
+                            } // else if
+
+                            else if ( cut == "通識延伸" ) {
+                                temp.typeHead = new Type ;
+                                TypePtr walk = temp.typeHead ;
+                                walk -> num = 2 ;
+                                pre = pos + 1 ;
+                                pos = buf.find_first_of( ' ', pre ) ;
+                                cut = buf.substr( pre, pos ) ;
+                                if ( cut == "天" ) {
+                                    walk -> next = new Type ;
+                                    walk = walk -> next ;
+                                    walk -> num = 0 ;
+                                    walk -> next = NULL ;
+                                } // if
+
+                                else if ( cut == "人" ) {
+                                    walk -> next = new Type ;
+                                    walk = walk -> next ;
+                                    walk -> num = 1 ;
+                                    walk -> next = NULL ;
+                                } // else if
+
+                                else if ( cut == "物" ) {
+                                    walk -> next = new Type ;
+                                    walk = walk -> next ;
+                                    walk -> num = 2 ;
+                                    walk -> next = NULL ;
+                                } // else if
+
+                                else if ( cut == "我" ) {
+                                    walk -> next = new Type ;
+                                    walk = walk -> next ;
+                                    walk -> num = 3 ;
+                                    walk -> next = NULL ;
+                                } // else if
+                            } // else if
+
+                            else if ( cut == "選修" ) {
+                                temp.typeHead = new Type ;
+                                TypePtr walk = temp.typeHead ;
+                                walk -> num = 2 ;
+                                pre = pos + 1 ;
+                                pos = buf.find_first_of( ' ', pre ) ;
+                                cut = buf.substr( pre, pos ) ;
+                                if ( cut == "自由" ) {
+                                    walk -> next = new Type ;
+                                    walk = walk -> next ;
+                                    walk -> num = 0 ;
+                                    walk -> next = NULL ;
+                                } // if
+
+                                else if ( cut == "系" ) {
+                                    walk -> next = new Type ;
+                                    walk = walk -> next ;
+                                    walk -> num = 1 ;
+                                    walk -> next = NULL ;
+                                } // else if
+                            } // else if
+
+                            else { // 基本知能
+                                temp.typeHead = new Type ;
+                                TypePtr walk = temp.typeHead ;
+                                walk -> num = 2 ;
+                                pre = pos + 1 ;
+                                pos = buf.find_first_of( ' ', pre ) ;
+                                cut = buf.substr( pre, pos ) ;
+                                if ( cut == "大一英文" ) {
+                                    walk -> next = new Type ;
+                                    walk = walk -> next ;
+                                    walk -> num = 0 ;
+                                    walk -> next = NULL ;
+                                } // if
+
+                                else if ( cut == "大一英聽" ) {
+                                    walk -> next = new Type ;
+                                    walk = walk -> next ;
+                                    walk -> num = 1 ;
+                                    walk -> next = NULL ;
+                                } // else if
+
+                                else if ( cut == "大二英文" ) {
+                                    walk -> next = new Type ;
+                                    walk = walk -> next ;
+                                    walk -> num = 2 ;
+                                    walk -> next = NULL ;
+                                } // else if
+
+                                else if ( cut == "還服" ) {
+                                    walk -> next = new Type ;
+                                    walk = walk -> next ;
+                                    walk -> num = 3 ;
+                                    walk -> next = NULL ;
+                                } // else if
+
+                                else { // 體育
+                                    walk -> next = new Type ;
+                                    walk = walk -> next ;
+                                    walk -> num = 4 ;
+                                    walk -> next = NULL ;
+                                } // else
+                            } // else
+                        } // if
+
+                        else if ( fNo == 2 ) {
+                            temp.name = cut ;
+                        } // else if
+
+                        else if ( fNo == 3 ) {
+                            temp.credit = atoi( cut.c_str() ) ;
+                        } // else if
+
+                        fNo++ ;
+                        pre = pos + 1 ;
+                        pos = buf.find_first_of( ' ', pre ) ;
+                    } // while
+
+                    Add( temp ) ;
+                } // while()
+            } // if
+        } // Read
+
+        void Add( Data temp ) {
+            datas.push_back( temp ) ;
+        } // Add
+
+        void Sort() {
+            int i = 0 ;
+            string temp ;
+            int index ;
+            for ( i = 0 ; i < datas.size()-1 ; i++ ) {
+                temp = datas[i].name ;
+                index = i ;
+                for ( int j = i ; j < datas.size() ; j++ ) {
+                    if ( datas[i].name < temp ) {
+                    temp = datas[i].name ;
+                    index = i ;
+                    } // if
+                } // for
+
+                if ( index != i )
+                    std :: swap( datas[i], datas[index] ) ;
+            } // for
+        } // Sort()
+
+        void Write_credit() ;
+        void Write_course() ;
+        void Update() ;
+        void Show() {
+            int i = 0 ;
+            TypePtr cur ;
+            for ( i = 0 ; i < datas.size() ; i++ ) {
+                cur = datas[i].typeHead ;
+                while ( cur != NULL ) {
+                    cout << cur -> num ;
+                    cur = cur -> next ;
+                } // while()
+
+                cout << " " << datas[i].name ;
+                cout << " " <<  datas[i].credit << endl ;
+            } // for()
+        } // Show()
+} ; // class DataVector
+
+
