@@ -24,7 +24,8 @@ int main() {
     cin >> cmd ;
     while ( !IsCmd( cmd ) ) {
         cout << "Illegally Command!\n" ;
-        cout << "Please Enter Your Command Again[a\\s\\q]:" ;
+        cout << "Please Enter Your Command Again:" ;
+        cin >> cmd ;
     } // while
 
     dataVector.Read() ;
@@ -38,31 +39,38 @@ int main() {
                 cin >> cmd ;
             } // while()
 
-            // update file
+            dataVector.Sort() ; // bug,empty vector
+            dataVector.Update() ;
+            dataVector.Write_course() ;
+            dataVector.Write_credit() ;
+            system( "cls" ) ;
         } // if
 
         else { // show
-            dataVector.Sort() ; // bug,empty vector
-            dataVector.Show() ;
-            //dataVector.Write_course() ;
-            //dataVector.Write_credit() ;
+            if ( dataVector.IsEmpty() )
+                cout << "尚未建立課程清單\n" ;
+            else {
+                dataVector.Show() ;
+            } // else
         } // show
 
-        cout << "\n\n[a\\s\\q]:" ;
+        cout << "\nPlease Enter A Command\n" ;
+        cout << "Add Course[a]\nWatch Your Credit[s]\nQuit[q]\n:" ;
         cin >> cmd ;
         while ( !IsCmd( cmd ) ) {
             cout << "Illegally Command!\n" ;
-            cout << "Please Enter Your Command Again[a\\s\\q]:" ;
+            cout << "Please Enter Your Command Again:" ;
+            cin >> cmd ;
         } // while
     } // while
 } // main()
 
 bool IsCmd( Str cmd ) {
-    if ( strcmp( cmd, "a" ) )
+    if ( strcmp( cmd, "a" ) == 0 )
         return true ;
-    else if ( strcmp( cmd, "s" ) )
+    else if ( strcmp( cmd, "s" ) == 0 )
         return true ;
-    else if ( strcmp( cmd, "q" ) )
+    else if ( strcmp( cmd, "q" ) == 0 )
         return true ;
 
     return false ;
